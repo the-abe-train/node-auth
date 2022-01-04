@@ -10,23 +10,31 @@
     <h3>Hello</h3>
     <h3>RegisterForm</h3>
     <form id="register-form" action="">
-      <input type="email" name="email" />
-      <input type="password" name="password" />
+      <input type="email" name="email" placeholder="test@test.com" />
+      <input type="password" name="password" placeholder="password"/>
       <button type="submit">Register</button>
     </form>
     <script>
       (() => {
         const form = document.getElementById("register-form");
-        form.addEventListener("submit", (e) => {
+        form.addEventListener("submit", async (e) => {
           e.preventDefault();
-          // const values = Object.values(form)
-          const values = Object.values(form).reduce((obj, field) => {
-            if (field.name) {
-              obj[field.name] = field.value;
-            }
-            return obj;
-          }, {});
-          console.log("values", values);
+          try {
+            const values = Object.values(form).reduce((obj, field) => {
+              if (field.name) {
+                obj[field.name] = field.value;
+              }
+              return obj;
+            }, {});
+            const res = await fetch("/api/register", {
+              method: "POST",
+              body: JSON.stringify(values),
+              headers: { "Content-type": "application/json; charset=UTF-8" },
+            });
+            console.log("values", values);
+          } catch (error) {
+            console.error(error);
+          }
         });
       })();
     </script>

@@ -4,9 +4,9 @@ import fastifyStatic from 'fastify-static';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { connectDb } from './db.js';
+import { registerUser } from './accounts/register.js';
 
-
-// EXM specific features
+// ESM specific features
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -25,8 +25,13 @@ async function startApp() {
     //   })
     // });
 
-    app.post('/api/register', {}, (req, reply) => {
-      console.log('request', request);
+    app.post('/api/register', {}, (request, reply) => {
+      try {
+        registerUser(request.body.email, request.body.password)
+        // console.log('request', req);
+      } catch (error) {
+        console.error(error);
+      }
     })
 
     await app.listen(3000);
