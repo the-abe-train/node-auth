@@ -1,11 +1,13 @@
 import './env.js';
 import { fastify } from 'fastify';
 import fastifyStatic from 'fastify-static';
+import fastifyCookie from 'fastify-cookie';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { connectDb } from './db.js';
 import { registerUser } from './accounts/register.js';
 import { authorizeUser } from './accounts/authorize.js';
+import { logUserIn } from './accounts/logUserIn.js';
 
 // ESM specific features
 const __filename = fileURLToPath(import.meta.url);
@@ -16,15 +18,13 @@ const app = fastify();
 async function startApp() {
   try {
 
+    app.register(fastifyCookie, {
+      secret: process.env.COOKIE_SIGNATURE
+    })
+
     app.register(fastifyStatic, {
       root: path.join(__dirname, 'public'),
     });
-
-    // app.get('/', {}, (req, reply) => {
-    //   reply.send({
-    //     data: 'hello world'
-    //   })
-    // });
 
     app.post('/api/register', {}, (request, reply) => {
       try {
@@ -38,7 +38,22 @@ async function startApp() {
     app.post('/api/authorize', {}, async (request, reply) => {
       try {
         console.log(request.body.email, request.body.password);
-        const userId = await authorizeUser(request.body.email, request.body.password);
+        const { isAuthorized, userId } = await authorizeUser(
+          request.body.email, request.body.password
+        );
+        if (isAuthorized) {
+          logUserIn(userId, request, reply);
+        }
+        reply.setCookie('testCookie', 'the value is this', {
+          path: '/',
+          domain: 'localhost',
+          httpOnly: true,
+          // expires: 
+          // secure
+        }).send({
+          data: 'just testing'
+        })
+
       } catch (error) {
         console.error(error);
       }
