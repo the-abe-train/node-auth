@@ -8,6 +8,7 @@ import { connectDb } from './db.js';
 import { registerUser } from './accounts/register.js';
 import { authorizeUser } from './accounts/authorize.js';
 import { logUserIn } from './accounts/logUserIn.js';
+import { getUserFromCookies } from './accounts/user.js';
 
 // ESM specific features
 const __filename = fileURLToPath(import.meta.url);
@@ -42,21 +43,34 @@ async function startApp() {
           request.body.email, request.body.password
         );
         if (isAuthorized) {
-          logUserIn(userId, request, reply);
+          await logUserIn(userId, request, reply);
+          reply.send({ data: 'user logged in' })
         }
-        reply.setCookie('testCookie', 'the value is this', {
-          path: '/',
-          domain: 'localhost',
-          httpOnly: true,
-          // expires: 
-          // secure
-        }).send({
-          data: 'just testing'
-        })
+        reply.send({ data: 'auth failed' })
 
       } catch (error) {
         console.error(error);
       }
+    })
+
+    app.get('/test', {}, async (request, reply) => {
+      // Verify user login
+      try {
+        
+        const user = await getUserFromCookies(request, reply);
+
+        // return user email if it exists, otherwise return unquthorized
+        if(user?._id) {
+          reply.send({data: user})
+        } else {
+          reply.send({data: 'user lookup failed'});
+        }
+      } catch (error) {
+        console.error(error);
+      }
+
+      
+      reply.send({data: 'hello world'})
     })
 
     await app.listen(3000);
