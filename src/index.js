@@ -9,6 +9,7 @@ import { registerUser } from './accounts/register.js';
 import { authorizeUser } from './accounts/authorize.js';
 import { logUserIn } from './accounts/logUserIn.js';
 import { getUserFromCookies } from './accounts/user.js';
+import { logUserOut } from './accounts/logUserOut.js';
 
 // ESM specific features
 const __filename = fileURLToPath(import.meta.url);
@@ -31,6 +32,16 @@ async function startApp() {
       try {
         registerUser(request.body.email, request.body.password)
         // console.log('request', req);
+      } catch (error) {
+        console.error(error);
+      }
+    })
+
+    app.post('/api/logout', {}, async (request, reply) => {
+      try {
+        await logUserOut(request, reply);
+        reply.send('user logged out');
+        
       } catch (error) {
         console.error(error);
       }

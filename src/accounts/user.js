@@ -31,7 +31,6 @@ export async function getUserFromCookies(request, reply) {
       const { refreshToken } = request.cookies;
       const { sessionToken } = jwt.verify(refreshToken, jwtSignature);
 
-
       // lookup session
       const currentSession = await session.findOne({ sessionToken })
 
