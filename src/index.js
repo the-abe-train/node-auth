@@ -28,13 +28,29 @@ async function startApp() {
       root: path.join(__dirname, 'public'),
     });
 
-    app.post('/api/register', {}, (request, reply) => {
+    app.post('/api/register', {}, async (request, reply) => {
       try {
-        registerUser(request.body.email, request.body.password)
-        // console.log('request', req);
-      } catch (error) {
-        console.error(error);
+        const userId = await registerUser(
+          request.body.email, request.body.password
+        );
+      if (userId) {
+        await logUserIn(userId, request, reply);
       }
+      reply.send({
+        data: {
+          status: "SUCCESS",
+          userId
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      reply.send({
+        data: {
+          status: "FAILED",
+          userId
+        }
+      })
+    }
     })
 
     app.post('/api/logout', {}, async (request, reply) => {
@@ -55,12 +71,22 @@ async function startApp() {
         );
         if (isAuthorized) {
           await logUserIn(userId, request, reply);
-          reply.send({ data: 'user logged in' })
+          reply.send({
+            data: {
+              status: "SUCCESS",
+              userId
+            }
+          });
         }
         reply.send({ data: 'auth failed' })
 
       } catch (error) {
-        console.error(error);
+        reply.send({
+          data: {
+            status: "FAILED",
+            userId
+          }
+        })
       }
     })
 
