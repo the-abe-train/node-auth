@@ -1,16 +1,10 @@
 import { session } from "../session/session.js";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 import { jwtSignature } from "../env.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 
-// interface JwtPayload {
-//   sessionToken: string
-// }
-
 export async function logUserOut(request: FastifyRequest, reply: FastifyReply) {
-
   try {
-    
     // get refresh token
     // decode session token from refresh token
     if (request?.cookies?.refreshToken) {
@@ -25,14 +19,12 @@ export async function logUserOut(request: FastifyRequest, reply: FastifyReply) {
       const { sessionToken } = decodedToken;
 
       // delete database record for session
-      await session.deleteOne({sessionToken});
+      await session.deleteOne({ sessionToken });
     }
 
-
     // remove cookies
-    reply.clearCookie('refreshToken').clearCookie('accessToken');
-
+    reply.clearCookie("refreshToken").clearCookie("accessToken");
   } catch (e) {
     console.error(e);
   }
-} 
+}

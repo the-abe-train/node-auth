@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
 
-import { jwtSignature } from "../env";
+import { jwtSignature } from "../env.js";
 
 export async function createTokens(sessionToken: string, userId: ObjectId) {
   try {

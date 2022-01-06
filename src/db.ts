@@ -1,9 +1,9 @@
 import mongo, { MongoClientOptions } from "mongodb";
-const { MongoClient  } = mongo;
-import { mongoUrl } from "./env";
+const { MongoClient } = mongo;
+import { mongoUrl } from "./env.js";
 
 interface Options extends MongoClientOptions {
-  useNewUrlParser: boolean
+  useNewUrlParser: boolean;
 }
 
 const options: Options = { useNewUrlParser: true };
@@ -16,7 +16,7 @@ export async function connectDb() {
 
     // Confirm connection
     await client.db("admin").command({ ping: 1 });
-    console.log("🗃 Connected to DB success");
+    console.log("Connected to DB success 🗃");
   } catch (e) {
     console.error(e);
     // If there is a problem close connection to db

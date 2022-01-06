@@ -1,30 +1,22 @@
-import "./env.js";
-import fastify, { FastifyRequest, RequestGenericInterface } from "fastify";
+import fastify, { FastifyRequest } from "fastify";
 import fastifyStatic from "fastify-static";
 import fastifyCookie from "fastify-cookie";
 import path from "path";
-// import { fileURLToPath } from 'url';
-import { Static, Type } from "@sinclair/typebox";
-import { connectDb } from "./db";
-import { registerUser } from "./accounts/register";
-import { authorizeUser } from "./accounts/authorize";
-import { logUserIn } from "./accounts/logUserIn";
-import { getUserFromCookies } from "./accounts/user";
-import { logUserOut } from "./accounts/logUserOut";
-import { IncomingMessage, Server } from "http";
-
-// Types
-// interface Body {
-//   email: string;
-//   password: string;
-// }
+import { fileURLToPath } from "url";
+import "./env.js";
+import { connectDb } from "./db.js";
+import { registerUser } from "./accounts/register.js";
+import { authorizeUser } from "./accounts/authorize.js";
+import { logUserIn } from "./accounts/logUserIn.js";
+import { getUserFromCookies } from "./accounts/user.js";
+import { logUserOut } from "./accounts/logUserOut.js";
 
 interface Request extends FastifyRequest {
   body: any;
 }
 
 // ESM specific features
-// const __filename = fileURLToPath(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = fastify();
