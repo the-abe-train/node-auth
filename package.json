@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/the-abe-train/node-auth#readme",
   "dependencies": {
-    "@sinclair/typebox": "^0.23.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
     "fastify": "^3.25.3",
