@@ -1,18 +1,17 @@
 import jwt from "jsonwebtoken";
+import { ObjectId } from "mongodb";
 
-const jwtSignature = process.env.JWT_SIGNATURE;
+import { jwtSignature } from "../env";
 
-export async function createTokens(sessionToken, userId) {
+export async function createTokens(sessionToken: string, userId: ObjectId) {
   try {
-    // Create reresh token
 
-    // Session id
+    // Create refresh token (Session id)
     const refreshToken = jwt.sign({
       sessionToken
     }, jwtSignature)
 
-    // create access token
-    // session ID, user ID
+    // create access token (session ID, user ID)
     const accessToken = jwt.sign({
       sessionToken, userId
     }, jwtSignature)

@@ -1,9 +1,13 @@
 import { session } from "../session/session.js";
 import jwt from 'jsonwebtoken';
+import { jwtSignature } from "../env.js";
+import { FastifyReply, FastifyRequest } from "fastify";
 
-const jwtSignature = process.env.JWT_SIGNATURE;
+// interface JwtPayload {
+//   sessionToken: string
+// }
 
-export async function logUserOut(request, reply) {
+export async function logUserOut(request: FastifyRequest, reply: FastifyReply) {
 
   try {
     
@@ -12,7 +16,13 @@ export async function logUserOut(request, reply) {
     if (request?.cookies?.refreshToken) {
       // If there is no access token, decode the refresh token,
       const { refreshToken } = request.cookies;
-      const { sessionToken } = jwt.verify(refreshToken, jwtSignature);
+      const decodedToken = jwt.verify(refreshToken, jwtSignature);
+
+      if (typeof decodedToken === "string") {
+        throw "decoded access token wrong type";
+      }
+
+      const { sessionToken } = decodedToken;
 
       // delete database record for session
       await session.deleteOne({sessionToken});

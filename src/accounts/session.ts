@@ -1,7 +1,13 @@
 import { randomBytes } from 'crypto';
+import { ObjectId } from 'mongodb';
 import { session } from '../session/session.js';
 
-export async function createSession(userId, connection) {
+interface Connection {
+  ip: string,
+  userAgent: string
+}
+
+export async function createSession(userId: ObjectId, connection: Connection) {
 
   try {
 
