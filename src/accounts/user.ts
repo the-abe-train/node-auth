@@ -1,10 +1,10 @@
 import { ObjectId } from "mongodb";
 import jwt from "jsonwebtoken";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { user } from "../user/user.js";
-import { session } from "../session/session.js";
-import { createTokens } from "./tokens.js";
-import { jwtSignature } from "../env.js";
+import { user } from "../user/user";
+import { session } from "../session/session";
+import { createTokens } from "./tokens";
+import { jwtSignature } from "../env";
 
 export async function getUserFromCookies(
   request: FastifyRequest,
@@ -58,7 +58,7 @@ export async function getUserFromCookies(
       }
     }
   } catch (error) {
-    console.error(error);
+    return console.error(error);
   }
 }
 

@@ -1,6 +1,8 @@
-import mongo, { MongoClientOptions } from "mongodb";
-const { MongoClient } = mongo;
-import { mongoUrl } from "./env.js";
+import mongo, { MongoClient, MongoClientOptions } from "mongodb";
+// const { MongoClient } = mongo;
+import { mongoUrl } from "./env";
+
+
 
 interface Options extends MongoClientOptions {
   useNewUrlParser: boolean;

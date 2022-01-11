@@ -1,6 +1,6 @@
 import { randomBytes } from 'crypto';
 import { ObjectId } from 'mongodb';
-import { session } from '../session/session.js';
+import { session } from '../session/session';
 
 interface Connection {
   ip: string,

@@ -2,22 +2,21 @@ import fastify, { FastifyRequest } from "fastify";
 import fastifyStatic from "fastify-static";
 import fastifyCookie from "fastify-cookie";
 import path from "path";
-import { fileURLToPath } from "url";
-import "./env.js";
-import { connectDb } from "./db.js";
-import { registerUser } from "./accounts/register.js";
-import { authorizeUser } from "./accounts/authorize.js";
-import { logUserIn } from "./accounts/logUserIn.js";
-import { getUserFromCookies } from "./accounts/user.js";
-import { logUserOut } from "./accounts/logUserOut.js";
+import "./env";
+import { connectDb } from "./db";
+import { registerUser } from "./accounts/register";
+import { authorizeUser } from "./accounts/authorize";
+import { logUserIn } from "./accounts/logUserIn";
+import { getUserFromCookies } from "./accounts/user";
+import { logUserOut } from "./accounts/logUserOut";
 
 interface Request extends FastifyRequest {
   body: any;
 }
 
 // ESM specific features
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 const app = fastify();
 
@@ -29,7 +28,13 @@ async function startApp() {
 
     app.register(fastifyStatic, {
       root: path.join(__dirname, "public"),
+      prefix: "/public/",
     });
+
+    app.get('/', async (request, reply) => {
+      reply.sendFile('index.html');
+      // reply.send({msg: "hello!"})
+    })
 
     app.post("/api/register", {}, async (request: Request, reply) => {
       try {

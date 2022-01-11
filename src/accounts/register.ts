@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { user } from "../user/user.js";
+import { user } from "../user/user";
 const { genSalt, hash } = bcrypt;
 
 export async function registerUser(email: string, password: string) {

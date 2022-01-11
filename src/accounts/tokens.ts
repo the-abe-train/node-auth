@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
 
-import { jwtSignature } from "../env.js";
+import { jwtSignature } from "../env";
 
 export async function createTokens(sessionToken: string, userId: ObjectId) {
   try {
@@ -20,6 +20,6 @@ export async function createTokens(sessionToken: string, userId: ObjectId) {
     return { accessToken, refreshToken }
 
   } catch (error) {
-    console.error(error);
+    return console.error(error);
   }
 }

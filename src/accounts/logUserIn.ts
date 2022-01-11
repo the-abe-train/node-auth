@@ -1,5 +1,5 @@
-import { createSession } from "./session.js";
-import { refreshTokens } from "./user.js";
+import { createSession } from "./session";
+import { refreshTokens } from "./user";
 import { ObjectId } from "mongodb";
 import { FastifyReply, FastifyRequest } from "fastify";
 

@@ -1,4 +1,4 @@
-import { user } from "../user/user.js";
+import { user } from "../user/user";
 import bcrypt from "bcryptjs";
 const { compare } = bcrypt;
 

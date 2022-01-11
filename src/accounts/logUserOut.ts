@@ -1,6 +1,6 @@
-import { session } from "../session/session.js";
+import { session } from "../session/session";
 import jwt from "jsonwebtoken";
-import { jwtSignature } from "../env.js";
+import { jwtSignature } from "../env";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export async function logUserOut(request: FastifyRequest, reply: FastifyReply) {
